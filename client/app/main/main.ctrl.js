@@ -1,16 +1,14 @@
 (function () {
     angular.module('mainCtrl', []).controller('mainController', ['$scope', 'userService', '$timeout', function ($scope, userService, $timeout) {
         $scope.user = {};
-        userService.getAll(function (data) {
-            console.log(data);
+        userService.getAll(function (data) {            
             $scope.users = data;
         }, function (err) {
             console.log(err)
         })
-        $scope.ping = function () {
-            console.log($scope.user);           
+        $scope.ping = function () {   
+            $scope.user.disableBtn = true;       
             userService.create($scope.user, function (data) {
-                console.log(data)
                 $scope.users.push(data);
                 $scope.user = {}
             }, function (err) {
@@ -22,13 +20,13 @@
             })
         }
 
-        $scope.update = function (user, index) {
-            console.log(user);           
+        $scope.update = function (user, index) {  
+            user.disableBtn = true;        
             userService.update(user, function (data) {
-                console.log(data)
                 $scope.users[index] = data
             }, function (err) {
-                console.log(err)
+                console.log(err);
+                user.disableBtn = false;
                 $scope.pingErrorMsg = err.message || "something went wrong";
                 $timeout(function () {
                     $scope.pingErrorMsg = ""
@@ -36,11 +34,13 @@
             })
         }
 
-        $scope.delete = function (id, index) {        
-            userService.delete({id: id}, function () {
+        $scope.delete = function (user, index) {  
+            user.disableBtn = true;       
+            userService.delete({id: user.id}, function () {
                 $scope.users.splice(index,1);
             }, function (err) {
                 console.log(err)
+                user.disableBtn = false; 
                 $scope.pingErrorMsg = err.message || "something went wrong";
                 $timeout(function () {
                     $scope.pingErrorMsg = ""
