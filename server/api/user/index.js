@@ -8,6 +8,7 @@ const validator = require('../../utils/request.validator.js');
 const router = new Router();
 
 router.post('/ping', controller.create);
+router.put('/update', controller.update);
 router.delete('/delete', validator.body(validationSchema.delete), controller.destroy);
 router.get('/user/:id', validator.params(validationSchema.get), controller.show);
 router.get('/users', controller.index);

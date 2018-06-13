@@ -2,7 +2,16 @@
     angular.module('boilerplate').factory('userService', ['$http', function ($http) {
         return {
             create: function (obj, success, error) {
-                $http.post('/api/ping/', obj).
+                $http.post('/api/ping/', obj, {}).
+                    success(function (data) {
+                        success(data);
+                    }).
+                    error(function (err) {
+                        error(err);
+                    });
+            },
+            update: function (obj, success, error) {
+                $http.put('/api/update/', obj, {}).
                     success(function (data) {
                         success(data);
                     }).
@@ -28,14 +37,22 @@
                         error(err);
                     });
             },
-            delete: function (id, success, error) {
-                $http.delete('/api/delete' + id).
-                    success(function (data) {
-                        success(data);
-                    }).
-                    error(function (err) {
-                        error(err);
-                    });
+            delete: function (user, success, error) {
+                console.log(user)
+                $http({
+                    url: '/api/delete',
+                    method: 'DELETE',
+                    data: user,
+                    headers: {
+                        "Content-Type": "application/json;charset=utf-8"
+                    }
+                }
+                ).then(function (data) {
+                    success(data);
+                }, function (err) {
+                    error(err);
+                })
+
             }
         };
 

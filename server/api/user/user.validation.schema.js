@@ -1,9 +1,9 @@
 const util = require('util');
 const Schema = {};
 const id = {
-    matches: {
-        options: /^[a-f\d]{24}$/i,
-        errorMessage: 'Invalid id'
+    notEmpty: true,
+    isInt: {
+        errorMessage: 'id must be integer value',
     }
 }
 

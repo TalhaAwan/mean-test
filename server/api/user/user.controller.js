@@ -4,10 +4,9 @@ const User = require('./user.model');
 const config = require('../../config/environment');
 const Controller = {};
 
-function handleError(res, statusCode) {
-    statusCode = statusCode || 500;
+function handleError(res) {
     return function (err) {
-        return res.status(statusCode).send(err);
+        return res.status(err.statusCode || 500).send(err);
     };
 }
 
@@ -29,10 +28,26 @@ Controller.index = function (req, res) {
  * Creates a new user
  */
 Controller.create = function (req, res) {
-    var newUser = new User(req.body);
-    newUser.save()
+    const newUser = new User(req.body);
+    return User.findOne({ id: req.body.id })
+        .exec()
         .then(function (user) {
-            return res.json({ message: `User ${req.body.name} with value ${req.body.value} created successfully!` });
+            if (user) {
+                throw { "message": "id already taken", statusCode: 400 }
+            }
+            return newUser.save()
+        })
+        .then(function (user) {
+            return res.json(user);
+        })
+        .catch(handleError(res));
+};
+
+Controller.update = function (req, res) {
+    return User.findOneAndUpdate({ id: req.body.id }, req.body, { new: true })
+        .exec()
+        .then(function (user) {            
+            return res.json(user);
         })
         .catch(handleError(res));
 };
@@ -57,7 +72,7 @@ Controller.show = function (req, res, next) {
  * Deletes a user
  */
 Controller.destroy = function (req, res) {
-    return User.findByIdAndRemove(req.body.id).exec()
+    return User.findOneAndRemove({ id: req.body.id }).exec()
         .then(function (result) {
             if (!result) {
                 return res.status(404).json({ message: `User with ${req.body.id} not found` })

@@ -1,23 +1,64 @@
+<div style="margin: 15px;">
+	<table st-table="users" class="table">
+		<thead>
+			<tr>
+				<th>Sr. no</th>
+				<th>id</th>
+				<th>value</th>
+			</tr>
+		</thead>
+		<tbody ng-repeat="user in users">
+			<tr ng-hide="user.showEditForm">
+				<td class="col-md-2">{{$index + 1}}</td>
+				<td class="col-md-4">{{user.id}}</td>
+				<td class="col-md-4">{{user.value}}</td>
+				<td class="col-md-1">
+					<button type="button" ng-click="user.showEditForm = true" class="btn btn-sm btn-success">
+						<i class="glyphicon glyphicon-pencil">
+						</i>
+					</button>
+				</td>
+				<td class="col-md-1">
+					<button type="button" ng-click="delete(user.id, $index)" class="btn btn-sm btn-danger">
+						<i class="glyphicon glyphicon-trash">
+						</i>
+					</button>
+				</td>
+			</tr>
+			<form name="userUpdateForm">
+				<tr ng-show="user.showEditForm">
+					<td class="col-md-2">{{$index + 1}}</td>
+					<td class="col-md-4">{{user.id}}</td>
+					<td class="col-md-4">
+						<input type="number" name="value" ng-model="user.value" placeholder="Value (num required)" required/>
+					</td>
+					<td class="col-md-1">
+						<button type="submit" ng-click="update(user, $index)" class="btn btn-sm btn-success">
+							<i class="glyphicon glyphicon-floppy-disk">
+							</i>
+						</button>
+					</td>
+					<td class="col-md-1">
+						<button type="button" ng-click="user.showEditForm = false" class="btn btn-sm">
+							<i class="glyphicon glyphicon-remove">
+							</i>
+						</button>
+					</td>
 
+				</tr>
+			</form>
+		</tbody>
+	</table>
 
-<table st-table="rowCollection" class="table table-striped">
-	<thead>
-	<tr>
-		<th>first name</th>
-		<th>last name</th>
-		<th>birth date</th>
-		<th>balance</th>
-		<th>email</th>
-	</tr>
-	</thead>
-	<tbody>
-	<tr ng-repeat="row in rowCollection">
-		<td>{{row.firstName}}</td>
-		<td>{{row.lastName}}</td>
-		<td>{{row.birthDate}}</td>
-		<td>{{row.balance}}</td>
-		<td>{{row.email}}</td>
-	</tr>
-	</tbody>
-</table>
-
+	<form name="userCreateForm" ng-submit="ping()">
+		<input type="number" name="id" ng-model="user.id" placeholder="Id (num required)" required>
+		<input type="number" name="value" ng-model="user.value" placeholder="Value (num required)" required/>
+		<button type="submit" class="btn btn-sm btn-primary" ng-disabled="!userCreateForm.$valid">
+			<i class="glyphicon glyphicon-plus">
+			</i>
+		</button>
+		<div style="color: red">
+			{{pingErrorMsg}}
+		</div>
+	</form>
+</div>
