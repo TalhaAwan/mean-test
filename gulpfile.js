@@ -14,12 +14,24 @@ gulp.task('default', [
     'build-src-js',
     'build-vendor-js',
     'copy-bs-fonts',
+    'copy-index.html',
+    'copy-favicon',
     'jshint'
 ]);
 
 
 gulp.task('copy-bs-fonts', function () {
     return gulp.src("client/libs/bootstrap/dist/fonts**/*")
+        .pipe(gulp.dest('dist/'));
+});
+
+gulp.task('copy-index.html', function () {
+    return gulp.src("client/index.html")
+        .pipe(gulp.dest('dist/'));
+});
+
+gulp.task('copy-favicon', function () {
+    return gulp.src("client/favicon.ico")
         .pipe(gulp.dest('dist/'));
 });
 
