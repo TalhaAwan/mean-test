@@ -1,3 +1,13 @@
-# MEAN Stack Boilerplate Application
+# MEAN TEST
 
-The server side code structure has largely been taken from [yeoman angular-fullstack](https://github.com/angular-fullstack/generator-angular-fullstack) generated code and modified.
+# Setup
+
+(requirements: node, npm, bower, gulp, running mongo)
+
+- Clone and cd into the directory
+- Run `npm install` and `bower install` 
+- Run `gulp` 
+- Run mongodb instance locally and pass its url with database name at "server/config/environment/index.js". Alternatively, pass remote mongo url such as of mlab
+- Run `npm start` and head to http://localhost:9000
+
+
