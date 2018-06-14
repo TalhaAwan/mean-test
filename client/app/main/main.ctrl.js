@@ -14,6 +14,7 @@
             }, function (err) {
                 console.log(err)
                 $scope.pingErrorMsg = err.message || "something went wrong";
+                $scope.user.disableBtn = false; 
                 $timeout(function () {
                     $scope.pingErrorMsg = ""
                 }, 3000)
